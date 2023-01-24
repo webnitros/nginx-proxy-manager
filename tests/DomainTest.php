@@ -22,7 +22,7 @@ class DomainTest extends TestCase
         $Domain = new Add($this->client());
         $Domain
             ->addDomain('site.ru')
-            ->forwardHostname('91.201.215.165')
+            ->forwardHostname('222')
             ->forwardPort(80)
             ->forwardScheme('http')//->ssl('')
         ;
