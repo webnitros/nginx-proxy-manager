@@ -42,10 +42,8 @@ final class RequestClient extends Client
     private $_response_status;
     /* @var array $_config */
     private $_config = [];
-    /**
-     * @var string
-     */
-    private $_body;
+
+    private $_body = null;
 
     /**
      * @param array $setting
@@ -115,10 +113,12 @@ final class RequestClient extends Client
      * @param array $params
      * @return bool
      */
-    private function sendRequest($method, $url, $params = [])
+    private function sendRequest(string $method, $url, $params = [])
     {
+
         $this->_exception_error = false;
         $this->_error = false;
+        $this->_body = null;
         $this->_msg = null;
         $this->_url = null;
         $this->_method = null;
@@ -140,7 +140,6 @@ final class RequestClient extends Client
             ], $this->_config);
 
 
-
             $options = array_merge($config, $config);
             $this->_options = $options;
             $this->_url = $url;
@@ -149,10 +148,10 @@ final class RequestClient extends Client
             if ($method == 'get' && !empty($params)) {
                 $url .= '?' . Psr7\build_query($params);
             }
+
+
             $this->response = $this->request($method, $url, $options);
 
-
-            # $this->response = $this->{$method}($url, $options);
             $result = true;
         } catch (BadResponseException $e) {
             $this->_error = true;
@@ -163,7 +162,6 @@ final class RequestClient extends Client
         } catch (\Exception $e) {
             $this->_error = true;
         }
-
 
         if (!is_null($e)) {
             if ($e->getCode()) {
@@ -179,6 +177,11 @@ final class RequestClient extends Client
     }
 
 
+    public function getResponse()
+    {
+        return $this->response;
+    }
+
     /**
      * Вернет true если было исключение
      * @return boolean
@@ -186,7 +189,7 @@ final class RequestClient extends Client
     public function getBody()
     {
         if ($this->_error) {
-            return null;
+            return $this->response->getBody()->getContents();
         }
         if (is_null($this->_body)) {
             $this->_body = $this->response->getBody()->getContents();
@@ -198,7 +201,7 @@ final class RequestClient extends Client
      * Вернет массив ответа или null если не удалось разорабрать ответ
      * @return array|null
      */
-    public function getArray()
+    public function toArray()
     {
         $body = $this->getBody();
         if (!$body) {
