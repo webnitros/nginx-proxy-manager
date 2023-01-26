@@ -8,6 +8,7 @@
 # клиент
 use App\Rest;
 use App\Token;
+
 $Token = new Token();
 $Client = new Rest();
 ```
