@@ -6,10 +6,9 @@
  * Time: 10:44
  */
 
-namespace App;
+namespace NginxProxyManager;
 
 
-use App\Helpers\RequestClient;
 use GuzzleHttp\Client;
 
 class Token

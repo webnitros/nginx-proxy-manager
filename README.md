@@ -6,15 +6,15 @@
 
 ```php
 # клиент
-use App\Rest;
-use App\Token;
+use NginxProxyManager\Rest;
+use NginxProxyManager\Token;
 
 $Token = new Token();
 $Client = new Rest();
 ```
 
 ```php
-use App\Meta\Domain;
+use NginxProxyManager\Meta\Domain;
 
 # создание домена
 $Domain = Domain::create($Client);
@@ -29,7 +29,7 @@ $Domain->save();
 ```
 
 ```php
-use App\Meta\Domain;
+use NginxProxyManager\Meta\Domain;
 
 # Получить домена по id
 $Domain = Domain::object(1,$Client);
@@ -102,6 +102,6 @@ NGINX_API_SECRET=password
 nano nano bootstrap.php
 
 require_once dirname(__FILE__, 1) . '/vendor/autoload.php';
-\App\Helpers\Env::loadFile(dirname(__FILE__, 1) . '/.env');
+\NginxProxyManager\Helpers\Env::loadFile(dirname(__FILE__, 1) . '/.env');
 
 ```

@@ -6,9 +6,8 @@
  * Time: 11:12
  */
 
-namespace App;
+namespace NginxProxyManager;
 
-use App\Helpers\RequestClient;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7;
 
@@ -46,14 +45,16 @@ class Rest
         $options = [
             'json' => $params
         ];
-        $method = mb_strtolower($method);
-        if ($method == 'get' && !empty($params)) {
+        if ($method === 'get' && !empty($params)) {
             $uri .= '?' . Psr7\build_query($params);
         }
-
         $this->Response = $this->client()->{$method}($uri, $options);
-        $body = $this->Response->getBody()->getContents();
-        return \GuzzleHttp\json_decode($body, true, 512);
+        $body = $this->Response->getBody();
+        if ($body) {
+            $body = $body->getContents();
+            return \GuzzleHttp\json_decode($body, true, 512);
+        }
+        return null;
     }
 
     /**

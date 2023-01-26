@@ -8,8 +8,8 @@
 
 namespace Tests;
 
-use App\Rest;
-use App\Token;
+use NginxProxyManager\Rest;
+use NginxProxyManager\Token;
 use Mockery\Adapter\Phpunit\MockeryTestCase;
 
 abstract class TestCase extends MockeryTestCase

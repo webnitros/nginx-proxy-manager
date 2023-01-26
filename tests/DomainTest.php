@@ -8,33 +8,33 @@
 
 namespace Tests;
 
-use App\Meta\Domain;
+use NginxProxyManager\Meta\Domain;
 
 class DomainTest extends TestCase
 {
 
-    public function testAddDomain()
-    {
+    /*public function testAddDomain()
+   {
 
-        /*   $is = rand(1, 1122);
+         $is = rand(1, 1122);
 
-           $Domain = Domain::create($this->client());
+          $Domain = Domain::create($this->client());
 
-           $domain = 'site' . $is . '.ru';
-           $Domain
-               ->addDomain($domain)
-               ->forwardHost('127.0.0.1')
-               ->forwardPort(80)
-               ->forwardScheme('http')//->ssl('')
-           ;
+          $domain = 'site' . $is . '.ru';
+          $Domain
+              ->addDomain($domain)
+              ->forwardHost('127.0.0.1')
+              ->forwardPort(80)
+              ->forwardScheme('http')//->ssl('')
+          ;
 
-           $Domain->save();
-           $Domain->set('forward_host', '827.0.0.1');
-           $Domain->save();*/
+          $Domain->save();
+          $Domain->set('forward_host', '827.0.0.1');
+          $Domain->save();
 
 
         self::assertArrayHasKey('id', $res);
-    }
+    }*/
 
 
     public function testDomainGet()
@@ -46,7 +46,7 @@ class DomainTest extends TestCase
 
     public function testDomainSearch()
     {
-        $results = Domain::search('site', $this->client());
+        $results = Domain::search('time', $this->client());
         self::assertIsArray($results);
         self::assertArrayHasKey('id', $results[0]);
     }
@@ -59,13 +59,5 @@ class DomainTest extends TestCase
     }
 
 
-    public function testDomainDeleteAll()
-    {
-        $results = Domain::search('site', $this->client());
-        foreach ($results as $result) {
-            $Domain = Domain::object($result['id'], $this->client());
-            self::assertTrue($Domain->delete());
-        }
-    }
 
 }

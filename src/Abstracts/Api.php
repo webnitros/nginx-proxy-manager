@@ -6,9 +6,9 @@
  * Time: 10:38
  */
 
-namespace App\Abstracts;
+namespace NginxProxyManager\Abstracts;
 
-use App\Rest;
+use NginxProxyManager\Rest;
 use function GuzzleHttp\Psr7\str;
 
 abstract class Api
@@ -22,7 +22,7 @@ abstract class Api
      */
     private $id;
     /**
-     * @var \App\Rest
+     * @var \NginxProxyManager\Rest
      */
     private $client;
 

@@ -6,11 +6,11 @@
  * Time=> 11=>12
  */
 
-namespace App\Meta;
+namespace NginxProxyManager\Meta;
 
 
-use App\Abstracts\Api;
-use App\Rest;
+use NginxProxyManager\Abstracts\Api;
+use NginxProxyManager\Rest;
 
 class Domain extends Api
 {
