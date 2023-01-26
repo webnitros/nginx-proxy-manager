@@ -6,11 +6,15 @@
 
 ```php
 # клиент
+use App\Rest;
+use App\Token;
 $Token = new Token();
 $Client = new Rest();
 ```
 
 ```php
+use App\Meta\Domain;
+
 # создание домена
 $Domain = Domain::create($Client);
 $Domain
@@ -24,7 +28,9 @@ $Domain->save();
 ```
 
 ```php
-# Получить домен по id
+use App\Meta\Domain;
+
+# Получить домена по id
 $Domain = Domain::object(1,$Client);
 
 # Удалить домена
