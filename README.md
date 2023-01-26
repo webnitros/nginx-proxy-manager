@@ -17,7 +17,8 @@ $Domain
    ->addDomain('site.ru')
    ->forwardHost('127.0.0.1')
    ->forwardPort(80)
-   ->forwardScheme('http')//->ssl('')
+   ->forwardScheme('http')
+   //->ssl('') // Покдлючение SSL сертификата (домен должен быть направлен на сервер)
 ;
 $Domain->save();
 ```
