@@ -52,13 +52,13 @@ class Token
     public function create()
     {
         $Client = new Client([
-            'base_uri' => getenv('API_URL'),
+            'base_uri' => getenv('NGINX_API_URL'),
         ]);
 
         $ResponseInterface = $Client->post('api/tokens', [
             'json' => [
-                'identity' => getenv('API_INENTITY'),
-                'secret' => getenv('API_SECRET'),
+                'identity' => getenv('NGINX_API_INENTITY'),
+                'secret' => getenv('NGINX_API_SECRET'),
             ]
         ]);
 

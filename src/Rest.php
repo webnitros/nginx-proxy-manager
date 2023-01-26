@@ -24,7 +24,7 @@ class Rest
     public function __construct(Token $token)
     {
         $this->client = new Client([
-            'base_uri' => getenv('API_URL'),
+            'base_uri' => getenv('NGINX_API_URL'),
             'headers' => [
                 'Authorization' => 'Bearer ' . $token->get(),
                 'Accept' => 'application/json'
@@ -47,7 +47,6 @@ class Rest
             'json' => $params
         ];
         $method = mb_strtolower($method);
-
         if ($method == 'get' && !empty($params)) {
             $uri .= '?' . Psr7\build_query($params);
         }

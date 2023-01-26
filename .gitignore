@@ -5,3 +5,4 @@
 /bootstrap.php
 /.phpunit.result.cache
 .env.local
+.env

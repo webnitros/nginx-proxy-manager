@@ -9,22 +9,56 @@
 namespace App\Abstracts;
 
 use App\Rest;
+use function GuzzleHttp\Psr7\str;
 
 abstract class Api
 {
     protected $uri = null;
     protected $method = null;
+    protected $data = [];
+    protected $default = [];
+    /**
+     * @var int
+     */
+    private $id;
+    /**
+     * @var \App\Rest
+     */
+    private $client;
 
-    public function __construct(Rest $rest)
+
+    public function setClient(Rest $rest)
     {
-        $this->rest = $rest;
+        $this->client = $rest;
+        return $this;
     }
 
-    public function send()
+    public function send_put($params = null)
     {
-        $this->res = $this->rest->sendRequest($this->method(), $this->uri(), $this->toArray());
-        $status = $this->rest->getStatusCode();
+        return $this->send('put', $params);
+    }
 
+    public function send_post($params = null)
+    {
+        return $this->send('post', $params);
+    }
+
+    public function send_get($params = null)
+    {
+        return $this->send('get', $params);
+    }
+
+    public function send_delete()
+    {
+        return $this->send('delete');
+    }
+
+    private function send($method = null, $params = null)
+    {
+        $method = $method ?? $this->method();
+        $params = $params ?? $this->toArray();
+        $this->res = $this->client->sendRequest($method, $this->uri(), $params);
+        $status = $this->client->getStatusCode();
         switch ($status) {
             case 201:
             case 200:
@@ -40,9 +74,13 @@ abstract class Api
         return $this->res;
     }
 
-    private function uri()
+    public function uri()
     {
-        return $this->uri;
+        $uri = $this->uri;
+        if ($id = $this->getId()) {
+            $uri .= '/' . (string)$id;
+        }
+        return $uri;
     }
 
     private function method()
@@ -52,7 +90,62 @@ abstract class Api
 
     public function toArray()
     {
-        return [];
+        return $this->data;
     }
 
+    public function fromArray(array $response)
+    {
+        $this->data = $response;
+        return $this;
+    }
+
+    public function set(string $key, $value)
+    {
+        $this->data[$key] = $value;
+        return $this;
+    }
+
+    public function get(string $key)
+    {
+        if (array_key_exists($key, $this->data)) {
+            return $this->data[$key];
+        }
+        return null;
+    }
+
+
+    public function setId(int $int)
+    {
+        $this->id = $int;
+        return $this;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+
+    public function save()
+    {
+        $tmp = $this->toArray();
+        $params = [];
+        $fields = $this->default;
+        foreach ($fields as $k => $v) {
+            if (array_key_exists($k, $tmp)) {
+                $params[$k] = $tmp[$k];
+            }
+        }
+
+
+        if (!$this->getId()) {
+            $response = $this->send_post($params);
+            $this->setId($response['id']);
+        } else {
+            $response = $this->send_put($params);
+        }
+
+        $this->fromArray($response);
+        return $this;
+    }
 }

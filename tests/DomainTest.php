@@ -8,48 +8,66 @@
 
 namespace Tests;
 
-use App\Meta\Domain\Add;
-use App\Meta\Domain\Delete;
-use App\Meta\Domain\Get;
-use App\Meta\Domain\Search;
-use App\Rest;
+use App\Meta\Domain;
 
 class DomainTest extends TestCase
 {
 
     public function testAddDomain()
     {
-        $Domain = new Add($this->client());
-        $Domain
-            ->addDomain('site.ru')
-            ->forwardHostname('222')
-            ->forwardPort(80)
-            ->forwardScheme('http')//->ssl('')
-        ;
-        $res = $Domain->send();
+
+        /*   $is = rand(1, 1122);
+
+           $Domain = Domain::create($this->client());
+
+           $domain = 'site' . $is . '.ru';
+
+           $Domain::create();
+           $Domain
+               ->addDomain($domain)
+               ->forwardHost('127.0.0.1')
+               ->forwardPort(80)
+               ->forwardScheme('http')//->ssl('')
+           ;
+
+           $Domain->save();
+           $Domain->set('forward_host', '827.0.0.1');
+           $Domain->save();*/
+
+
         self::assertArrayHasKey('id', $res);
     }
 
 
     public function testDomainGet()
     {
-        $Domain = new Get($this->client());
-        $res = $Domain->setId(1)->send();
-        self::assertArrayHasKey('id', $res);
+        $Domain = Domain::object(11, $this->client());
+        $params = $Domain->toArray();
+        self::assertArrayHasKey('id', $params);
     }
 
     public function testDomainSearch()
     {
-        $Domain = new Search($this->client());
-        $res = $Domain->query('dasdasd.ru')->send();
-        self::assertIsArray($res);
-        self::assertArrayHasKey('id', $res[0]);
+        $results = Domain::search('site', $this->client());
+        self::assertIsArray($results);
+        self::assertArrayHasKey('id', $results[0]);
     }
 
     public function testDomainDelete()
     {
-        $Domain = new Delete($this->client());
-        $res = $Domain->setId(15)->send();
+        $Domain = Domain::object(11, $this->client());
+        $res = $Domain->delete();
         self::assertTrue($res);
     }
+
+
+    public function testDomainDeleteAll()
+    {
+        $results = Domain::search('site', $this->client());
+        foreach ($results as $result) {
+            $Domain = Domain::object($result['id'], $this->client());
+            self::assertTrue($Domain->delete());
+        }
+    }
+
 }
