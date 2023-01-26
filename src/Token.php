@@ -22,9 +22,18 @@ class Token
      * @var mixed
      */
     private $expires;
+    /**
+     * @var string
+     */
+    private $url;
+    private $login;
+    private $password;
 
-    public function __construct()
+    public function __construct(string $url, string $login, string $password)
     {
+        $this->url = $url;
+        $this->login = $login;
+        $this->password = $password;
         $this->create();
     }
 
@@ -52,13 +61,13 @@ class Token
     public function create()
     {
         $Client = new Client([
-            'base_uri' => getenv('NGINX_API_URL'),
+            'base_uri' => $this->url,
         ]);
 
         $ResponseInterface = $Client->post('api/tokens', [
             'json' => [
-                'identity' => getenv('NGINX_API_INENTITY'),
-                'secret' => getenv('NGINX_API_SECRET'),
+                'identity' => $this->login,
+                'secret' => $this->password,
             ]
         ]);
 

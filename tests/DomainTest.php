@@ -21,8 +21,6 @@ class DomainTest extends TestCase
            $Domain = Domain::create($this->client());
 
            $domain = 'site' . $is . '.ru';
-
-           $Domain::create();
            $Domain
                ->addDomain($domain)
                ->forwardHost('127.0.0.1')

@@ -19,10 +19,9 @@ abstract class TestCase extends MockeryTestCase
         parent::setUp();
     }
 
-
     public function token()
     {
-        return new Token();
+        return new Token(getenv('NGINX_API_URL'), getenv('NGINX_API_INENTITY'), getenv('NGINX_API_SECRET'));
     }
 
     public function client()
