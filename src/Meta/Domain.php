@@ -23,10 +23,7 @@ class Domain extends Api
         "access_list_id" => "0",
         "certificate_id" => 0,
         "ssl_forced" => false,
-        "meta" => [
-            "letsencrypt_agree" => false,
-            "dns_challenge" => false
-        ],
+        "meta" => [],
         "advanced_config" => "",
         "locations" => [],
         "block_exploits" => false,
