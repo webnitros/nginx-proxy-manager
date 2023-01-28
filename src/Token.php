@@ -61,6 +61,9 @@ class Token
     {
         $Client = new Client([
             'base_uri' => $this->url,
+            'verify' => false,
+            'timeout' => 25.0,
+            'connect_timeout' => 5
         ]);
 
         $ResponseInterface = $Client->post('api/tokens', [
