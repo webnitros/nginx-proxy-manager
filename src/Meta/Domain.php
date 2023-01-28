@@ -119,7 +119,6 @@ class Domain extends Api
      */
     public function ssl(string $certificate_id)
     {
-        $this->set('ssl_forced', true);
         $this->set('certificate_id', $certificate_id);
         return $this;
     }
