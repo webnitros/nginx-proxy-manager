@@ -23,7 +23,10 @@ class Domain extends Api
         "access_list_id" => "0",
         "certificate_id" => 0,
         "ssl_forced" => false,
-        "meta" => [],
+        "meta" => [
+            'letsencrypt_agree' => false,
+            'dns_challenge' => false,
+        ],
         "advanced_config" => "",
         "locations" => [],
         "block_exploits" => false,
@@ -117,6 +120,31 @@ class Domain extends Api
     public function ssl(string $certificate_id)
     {
         $this->set('certificate_id', $certificate_id);
+        return $this;
+    }
+
+    /**
+     * Дополнительные настройки для locations
+     * @param array $locations
+     * @return $this
+     */
+    public function locations(array $locations)
+    {
+        $this->set('locations', $locations);
+        return $this;
+    }
+
+
+    /**
+     * @param string $key
+     * @param $value
+     * @return $this
+     */
+    public function meta(string $key, $value)
+    {
+        $meta = $this->get('meta');
+        $meta[$key] = $value;
+        $this->set('meta', $meta);
         return $this;
     }
 
