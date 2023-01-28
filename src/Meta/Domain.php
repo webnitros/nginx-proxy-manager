@@ -98,18 +98,72 @@ class Domain extends Api
     }
 
     /**
-     * Добавляем SSL сертификат
+     * Создать новый сертификат
      * @return $this
      */
-    public function ssl(string $email)
+    public function createSsl(string $email)
     {
-        $this->set('ssl_forced', true);
         $this->set('certificate_id', 'new');
         $this->set('meta', [
             'letsencrypt_email' => $email,
             'letsencrypt_agree' => true,
-            'dns_challenge' => true,
+            'dns_challenge' => false,
         ]);
+        return $this;
+    }
+
+
+    /**
+     * Прикрепить существующий сертификат
+     * @return $this
+     */
+    public function ssl(string $certificate_id)
+    {
+        $this->set('ssl_forced', true);
+        $this->set('certificate_id', $certificate_id);
+        return $this;
+    }
+
+
+    /**
+     * HSTS является технологией, которая ограничивает открытие сайта из браузера только по протоколу HTTPS.
+     * @param bool $value
+     * @return $this
+     */
+    public function hstsEnabled(bool $value = true)
+    {
+        $this->set('hsts_enabled', $value);
+        return $this;
+    }
+
+    /**
+     * Перенаправление на https
+     * @param bool $value
+     * @return $this
+     */
+    public function sslForced(bool $value = true)
+    {
+        $this->set('ssl_forced', $value);
+        return $this;
+    }
+
+
+    public function hstsSubdomains(bool $value = true)
+    {
+        $this->set('hsts_subdomains', $value);
+        return $this;
+    }
+
+    /**
+     * Протокол HTTP/2 существенно ускоряет открытие сайтов за счет следующих особенностей:
+     * соединения: несколько запросов могут быть отправлены через одно TCP-соединение,
+     * и ответы могут быть получены в любом порядке.
+     * @param bool $value
+     * @return $this
+     */
+    public function http2Support(bool $value = true)
+    {
+        $this->set('http2_support', $value);
         return $this;
     }
 
