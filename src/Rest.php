@@ -23,7 +23,6 @@ class Rest
     public function __construct(Token $token)
     {
         $this->client = new Client([
-            'verify' => false,
             'base_uri' => getenv('NGINX_API_URL'),
             'headers' => [
                 'Authorization' => 'Bearer ' . $token->get(),
